@@ -11,7 +11,7 @@ import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
 from torch.autograd import Variable
 from torch.nn.parallel import DataParallel
-import cPickle as pickle
+# import cPickle as pickle
 import time
 import argparse
 
@@ -301,18 +301,18 @@ feat_func_att = DeepMAR_ResNet50_ExtractFeature(model=model_w)
 def attribute_evaluate_subfunc(feat_func, test_set, **test_kwargs): 
     """ evaluate the attribute recognition precision """
     result = attribute_evaluate(feat_func, test_set, **test_kwargs)
-    print '-' * 60
-    print 'Evaluation on %s set:' % (cfg.test_split)
-    print 'Label-based evaluation: \n mA: %.4f'%(np.mean(result['label_acc']))
-    print 'Instance-based evaluation: \n Acc: %.4f, Prec: %.4f, Rec: %.4f, F1: %.4f' \
-        %(result['instance_acc'], result['instance_precision'], result['instance_recall'], result['instance_F1'])
-    print '-' * 60
+    print('-' * 60)
+    print('Evaluation on %s set:' % (cfg.test_split))
+    print('Label-based evaluation: \n mA: %.4f'%(np.mean(result['label_acc'])))
+    print('Instance-based evaluation: \n Acc: %.4f, Prec: %.4f, Rec: %.4f, F1: %.4f' \
+        %(result['instance_acc'], result['instance_precision'], result['instance_recall'], result['instance_F1']))
+    print('-' * 60)
 
 # print the model into log
-print model
+print(model)
 # test only
 if cfg.test_only:
-    print 'test with feat_func_att'
+    print('test with feat_func_att')
     attribute_evaluate_subfunc(feat_func_att, test_set, **cfg.test_kwargs)
     sys.exit(0)
      
@@ -385,5 +385,5 @@ for epoch in range(start_epoch, cfg.total_epochs):
     # test on validation set #
     ##########################
     if (epoch + 1) % cfg.epochs_per_val == 0 or epoch+1 == cfg.total_epochs:
-        print 'att test with feat_func_att'
+        print('att test with feat_func_att')
         attribute_evaluate_subfunc(feat_func_att, test_set, **cfg.test_kwargs)

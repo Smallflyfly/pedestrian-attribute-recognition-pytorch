@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 python ./script/experiment/train_deepmar_resnet50.py \
     --sys_device_ids="(0,)" \

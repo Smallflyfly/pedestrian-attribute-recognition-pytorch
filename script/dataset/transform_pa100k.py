@@ -1,7 +1,9 @@
 import os
+import pickle
+
 import numpy as np
 import random
-import cPickle as pickle
+# import cPickle as pickle
 from scipy.io import loadmat
 
 np.random.seed(0)
@@ -25,7 +27,7 @@ def generate_data_description(save_dir):
     dataset['att_name'] = []
     dataset['selected_attribute'] = range(26)
     # load ANNOTATION.MAT
-    data = loadmat(open('./dataset/pa100k/annotation.mat', 'r'))
+    data = loadmat('./dataset/pa100k/annotation.mat')
     for idx in range(26):
         dataset['att_name'].append(data['attributes'][idx][0][0])
 
@@ -41,7 +43,7 @@ def generate_data_description(save_dir):
         dataset['image'].append(data['test_images_name'][idx][0][0])
         dataset['att'].append(data['test_label'][idx, :].tolist())
 
-    with open(os.path.join(save_dir, 'pa100k_dataset.pkl'), 'w+') as f:
+    with open(os.path.join(save_dir, 'pa100k_dataset.pkl'), 'wb') as f:
         pickle.dump(dataset, f)
 
 def create_trainvaltest_split(traintest_split_file):
@@ -56,11 +58,11 @@ def create_trainvaltest_split(traintest_split_file):
     partition['weight_trainval'] = []
     partition['weight_train'] = []
     # load ANNOTATION.MAT
-    data = loadmat(open('./dataset/pa100k/annotation.mat', 'r'))
-    train = range(80000) 
+    data = loadmat('./dataset/pa100k/annotation.mat')
+    train = list(range(80000))
     val = [i+80000 for i in range(10000)]
     test = [i+90000 for i in range(10000)]
-    trainval = train + val
+    trainval = train.extend(val)
     partition['train'].append(train)
     partition['val'].append(val)
     partition['trainval'].append(trainval)
@@ -74,7 +76,7 @@ def create_trainvaltest_split(traintest_split_file):
     partition['weight_trainval'].append(weight_trainval)
     partition['weight_train'].append(weight_train)
 
-    with open(traintest_split_file, 'w+') as f:
+    with open(traintest_split_file, 'wb') as f:
         pickle.dump(partition, f)
 
 if __name__ == "__main__":
